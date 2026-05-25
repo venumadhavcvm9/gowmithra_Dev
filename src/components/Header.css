@@ -1,0 +1,8 @@
+.top-header {
+  background: #0a3d62;
+  color: #fff;
+  font-size: 13px;
+  padding: 6px 40px;
+  display: flex;
+  justify-content: space-between;
+}
