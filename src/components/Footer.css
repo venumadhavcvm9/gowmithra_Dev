@@ -1,0 +1,15 @@
+.footer {
+  background: #0a3d62;
+  color: white;
+  text-align: center;
+}
+
+.top-footer a {
+  margin: 10px;
+  display: inline-block;
+}
+
+.bottom-footer {
+  padding: 10px;
+  border-top: 1px solid #fff;
+}
