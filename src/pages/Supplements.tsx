@@ -1,7 +1,7 @@
 import CategoryPage from "../components/CategoryPage";
 
 const Supplements = () => {
-  return <CategoryPage type="SUPPLEMENTS" />;
+  return <CategoryPage type="Supplements" />;
 };
 
 export default Supplements;

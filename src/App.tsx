@@ -10,23 +10,31 @@ import BuyMedicine from "./pages/BuyMedicine";
 import Supplements from "./pages/Supplements";
 import FirstAid from "./pages/FirstAid";
 import FeedAdditives from "./pages/FeedAdditives";
-
+import Cart from "./pages/Cart";
+import Checkout from "./pages/Checkout";
+import Profile from "./pages/Profile";
+import { CartProvider } from "./context/CartContext";
 const App: React.FC = () => {
   return (
-    <Router>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/buy-medicine" element={<BuyMedicine />} />
-          <Route path="/supplements" element={<Supplements />} />
-          <Route path="/first-aid" element={<FirstAid />} />
-          <Route path="/feed-additives" element={<FeedAdditives />} />
-        </Routes>
-      </Layout>
+    <CartProvider>
+      <Router>
+        <Layout>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/buy-medicine" element={<BuyMedicine />} />
+            <Route path="/supplements" element={<Supplements />} />
+            <Route path="/first-aid" element={<FirstAid />} />
+            <Route path="/feed-additives" element={<FeedAdditives />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/checkout" element={<Checkout />} />
+            <Route path="/profile" element={<Profile />} />
+          </Routes>
+        </Layout>
 
-      <ToastContainer position="top-right" autoClose={3000} />
-    </Router>
+        <ToastContainer position="top-right" autoClose={3000} />
+      </Router>
+    </CartProvider>
   );
 };
 

@@ -1,17 +1,28 @@
 import React, { useEffect, useState } from "react";
 import API from "../services/api";
 import { useNavigate } from "react-router-dom";
+import { useCart } from "../context/CartContext";
 import "./MedicineSection.css";
 
 const categories = [
-  { key: "SUPPLEMENTS", label: "Supplements", route: "/supplements" },
+  { key: "Supplements", label: "Supplements", route: "/supplements" },
   { key: "FIRST_AID", label: "First Aid", route: "/first-aid" },
   { key: "FEED_ADDITIVES", label: "Feed Additives", route: "/feed-additives" },
 ];
 
+export interface Medicine {
+  medicine_id: string;
+  name: string;
+  price: number;
+  thumbnail: string;
+  category: string;
+  is_active: boolean;
+  show_to_users: boolean;
+}
+
 const MedicineSection = () => {
-  const [medicines, setMedicines] = useState<any[]>([]);
-  const [cart, setCart] = useState<{ [key: string]: number }>({});
+  const [medicines, setMedicines] = useState<Medicine[]>([]);
+  const { state, addItem, updateQuantity } = useCart();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,7 +34,7 @@ const MedicineSection = () => {
       const res = await API.get("/medicines/user");
 
       const filtered = (res.data || []).filter(
-        (m: any) => m.is_active && m.show_to_users
+        (m: Medicine) => m.is_active && m.show_to_users
       );
 
       setMedicines(filtered);
@@ -32,23 +43,33 @@ const MedicineSection = () => {
     }
   };
 
-  const increaseQty = (id: string) => {
-    setCart((prev) => ({
-      ...prev,
-      [id]: (prev[id] || 0) + 1,
-    }));
+  // Convert cart to a dictionary for O(1) lookup
+  const cartMap = React.useMemo(() => {
+    const map: Record<string, number> = {};
+    state.items.forEach(item => {
+      map[item.medicine_id] = item.quantity;
+    });
+    return map;
+  }, [state.items]);
+
+  const getQty = (id: string) => cartMap[id] || 0;
+
+  const handleAdd = (med: Medicine) => {
+    addItem({
+      medicine_id: med.medicine_id,
+      name: med.name,
+      price: med.price,
+      thumbnail: med.thumbnail,
+      quantity: 1,
+    });
   };
 
-  const decreaseQty = (id: string) => {
-    setCart((prev) => {
-      const qty = (prev[id] || 0) - 1;
-      if (qty <= 0) {
-        const updated = { ...prev };
-        delete updated[id];
-        return updated;
-      }
-      return { ...prev, [id]: qty };
-    });
+  const handleIncrease = (med: Medicine) => {
+    updateQuantity(med.medicine_id, getQty(med.medicine_id) + 1);
+  };
+
+  const handleDecrease = (med: Medicine) => {
+    updateQuantity(med.medicine_id, getQty(med.medicine_id) - 1);
   };
 
   return (
@@ -81,41 +102,34 @@ const MedicineSection = () => {
                   <div className="grid">
 
                     {items.map((med) => (
-                        <div className="card" key={med.medicine_id}>
-  
-                          {/* IMAGE */}
-                          <div className="img-box">
-                            <img src={`/uploads/${med.thumbnail}`} alt={med.name} />
-                          </div>
+                      <div className="card" key={med.medicine_id} style={{ textAlign: 'center' }}>
 
-                          {/* CONTENT */}
-                          <div className="card-content">
-                            <h4 className="title">{med.name}</h4>
-
-                            <div className="bottom-row">
-                              
-                              {/* PRICE */}
-                              <span className="price">₹{med.price}</span>
-
-                              {/* ACTION */}
-                              {!cart[med.medicine_id] ? (
-                                <button
-                                  className="add-btn"
-                                  onClick={() => increaseQty(med.medicine_id)}
-                                >
-                                  + Add
-                                </button>
-                              ) : (
-                                <div className="qty-control">
-                                  <button onClick={() => decreaseQty(med.medicine_id)}>-</button>
-                                  <span>{cart[med.medicine_id]}</span>
-                                  <button onClick={() => increaseQty(med.medicine_id)}>+</button>
-                                </div>
-                              )}
-
-                            </div>
-                          </div>
+                        {/* IMAGE */}
+                        <div className="img-box">
+                          <img src={`${med.thumbnail}`} alt={med.name} />
                         </div>
+
+                        {/* CONTENT */}
+                        <h4 className="title">{med.name}</h4>
+                        <p className="price" style={{ margin: '8px 0' }}>₹{med.price}</p>
+
+                        {/* ACTION */}
+                        {!getQty(med.medicine_id) ? (
+                          <button
+                            className="cart-btn"
+                            style={{ width: '100%', padding: '8px', border: 'none', background: '#22c55e', color: 'white', borderRadius: '6px', cursor: 'pointer', marginTop: '5px' }}
+                            onClick={() => handleAdd(med)}
+                          >
+                            Add to cart
+                          </button>
+                        ) : (
+                          <div className="qty-control" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: '#f0fdf4', padding: '5px 10px', borderRadius: '20px', border: '1px solid #e9ecef', marginTop: '10px' }}>
+                            <button style={{ border: 'none', background: '#22c55e', color: 'white', width: '28px', height: '28px', borderRadius: '50%', cursor: 'pointer', fontWeight: 'bold' }} onClick={() => handleDecrease(med)}>-</button>
+                            <span style={{ fontWeight: '600', color: 'black' }}>{getQty(med.medicine_id)}</span>
+                            <button style={{ border: 'none', background: '#22c55e', color: 'white', width: '28px', height: '28px', borderRadius: '50%', cursor: 'pointer', fontWeight: 'bold' }} onClick={() => handleIncrease(med)}>+</button>
+                          </div>
+                        )}
+                      </div>
                     ))}
 
                     {/* VIEW MORE (ALWAYS LAST) */}

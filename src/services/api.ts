@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const API = axios.create({
- // baseURL: "http://localhost:5000/api",
-  baseURL: "https://api.gowmithra.com/api"
+ baseURL: "http://localhost:5000/api",
+  // baseURL: "https://api.gowmithra.com/api"
 });
 
 API.interceptors.request.use((config) => {

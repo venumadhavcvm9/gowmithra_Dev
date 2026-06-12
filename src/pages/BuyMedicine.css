@@ -131,3 +131,18 @@ button:hover {
   cursor: pointer;
   color: #64748b;
 }
+
+.success-box {
+  width: 350px;
+}
+
+.success-icon {
+  margin-bottom: 15px;
+}
+
+.success-box p {
+  color: #475569;
+  font-size: 14px;
+  margin: 10px 0 20px 0;
+  line-height: 1.5;
+}

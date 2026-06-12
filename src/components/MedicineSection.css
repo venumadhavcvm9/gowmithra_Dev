@@ -33,24 +33,27 @@
 }
 
 .products-section {
-  flex: 0 0 75%;   /* force 75% width */
+  flex: 0 0 75%;
+  /* force 75% width */
   max-width: 75%;
 }
 
-/* GRID = EXACTLY 3 PER ROW */
+/* GRID = EXACTLY 4 PER ROW */
 .grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr)); /* 🔥 stronger fix */
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  /* 🔥 stronger fix */
   gap: 20px;
 }
 
 /* Tablet */
 @media (max-width: 1024px) {
-.grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr)); /* 🔥 stronger fix */
-  gap: 20px;
-}
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    /* 🔥 stronger fix */
+    gap: 20px;
+  }
 }
 
 /* Mobile */
@@ -63,15 +66,18 @@
 /* CARD */
 .card {
   background: #fff;
+  border: 1px solid #e2e8f0;
   border-radius: 14px;
   padding: 14px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
   transition: 0.25s;
+  display: flex;
+  flex-direction: column;
 }
 
 .card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 22px rgba(0,0,0,0.12);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
 }
 
 /* IMAGE */
@@ -91,7 +97,10 @@
 }
 
 /* CONTENT */
-.card-content {
+.card-content-stack {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
   margin-top: 10px;
 }
 
@@ -100,7 +109,9 @@
   font-size: 15px;
   font-weight: 600;
   color: #1e293b;
-  margin-bottom: 10px;
+  margin-bottom: auto;
+  /* Pushes everything below it down */
+  padding-bottom: 8px;
 }
 
 /* 🔥 FIXED ALIGNMENT ROW */
@@ -153,6 +164,10 @@
   border-radius: 50%;
   cursor: pointer;
   font-weight: bold;
+  margin-top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .qty-control span {
@@ -161,6 +176,7 @@
   min-width: 20px;
   text-align: center;
 }
+
 /* VIEW MORE */
 .view-more {
   display: flex;
@@ -178,6 +194,7 @@
   flex: 0 0 25%;
   max-width: 25%;
 }
+
 .ads {
   width: 25%;
   display: flex;
@@ -209,5 +226,29 @@
 
   .grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .medicine-section .empty-state {
+    text-align: center;
+    padding: 40px;
+    background: white;
+    border-radius: 12px;
+    border: 1px dashed #e2e8f0;
+    width: auto;
+    height: auto;
+  }
+
+  .medicine-section .empty-state img {
+    width: 90px;
+    opacity: 0.6;
+    margin-bottom: 15px;
+  }
+
+  .medicine-section .empty-state p {
+    color: #718096;
+    font-size: 16px;
+    font-weight: 500;
   }
 }

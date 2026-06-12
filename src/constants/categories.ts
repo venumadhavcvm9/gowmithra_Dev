@@ -1,5 +1,5 @@
 export const CATEGORY_MAP = {
-  SUPPLEMENTS: [
+  Supplements: [
     { label: "Dewormers (Mild / Oral)", value: "DEWORMER" },
     { label: "Ectoparasite Control (Ticks/Fleas)", value: "ECTOPARASITE" },
     { label: "Nutritional Supplements", value: "NUTRITIONAL" },

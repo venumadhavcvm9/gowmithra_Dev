@@ -268,3 +268,141 @@
   padding: 6px 12px;
   font-size: 14px;
 }
+
+/* RESPONSIVE NAVBAR UPDATES */
+.navbar {
+  display: block; /* Override previous flex */
+  padding: 12px 40px;
+}
+
+.navbar-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.mobile-menu-btn {
+  display: none;
+  cursor: pointer;
+  color: #0a3d62;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-search {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .navbar {
+    padding: 12px 20px;
+  }
+  
+  .mobile-menu-btn {
+    display: flex;
+  }
+
+  .desktop-search {
+    display: none;
+  }
+
+  .mobile-search {
+    display: block;
+    margin-top: 12px;
+    width: 100%;
+  }
+
+  .mobile-search input {
+    width: 100%;
+  }
+
+  .nav-links {
+    display: none; 
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: white;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    padding: 16px 20px;
+    border-top: 1px solid #f1f5f9;
+    z-index: 999;
+    align-items: stretch;
+  }
+
+  .nav-links.mobile-active {
+    display: flex;
+  }
+
+  .nav-links span {
+    width: 100%;
+    padding: 14px 12px;
+    border-bottom: 1px solid #f1f5f9;
+    justify-content: flex-start;
+  }
+
+  .nav-links span:last-child {
+    border-bottom: none;
+  }
+}
+
+/* MOBILE BOTTOM NAV (Hidden on desktop) */
+.mobile-bottom-nav {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .mobile-bottom-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #ffffff;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.06);
+    z-index: 1000;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 0;
+    padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+    border-top: 1px solid #edf2f7;
+  }
+
+  .mobile-bottom-nav span {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    color: #a0aec0;
+    font-size: 11px;
+    cursor: pointer;
+    flex: 1;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .mobile-bottom-nav span svg {
+    font-size: 22px;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease;
+  }
+
+  .mobile-bottom-nav span label {
+    cursor: pointer;
+    font-weight: 500;
+  }
+
+  .mobile-bottom-nav span.active {
+    color: #27ae60;
+  }
+
+  .mobile-bottom-nav span.active svg {
+    color: #27ae60;
+  }
+
+  /* Ensure body content doesn't get hidden behind the bottom nav */
+  body {
+    padding-bottom: 70px;
+  }
+}

@@ -5,34 +5,94 @@
 }
 
 .auth-box {
-  width: 420px;
+  width: 450px;
   background: #fff;
-  padding: 25px;
-  border-radius: 10px;
-  box-shadow: 0 6px 25px rgba(0,0,0,0.08);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+}
+
+.auth-box h2 {
+  font-size: 26px;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 24px;
+  text-align: center;
 }
 
 input, select, textarea {
   width: 100%;
-  margin-top: 10px;
-  padding: 10px;
+  margin-top: 4px;
+  padding: 11px 14px;
   border-radius: 6px;
-  border: 1px solid #ddd;
+  border: 1px solid #d2d6dc;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  box-sizing: border-box;
+  background-color: #fcfcfc;
+  transition: all 0.2s ease-in-out;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: #27ae60;
+  background-color: #fff;
+  box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.15);
+}
+
+textarea {
+  min-height: 80px;
+  resize: vertical;
 }
 
 button {
   width: 100%;
-  margin-top: 15px;
-  padding: 10px;
+  margin-top: 20px;
+  padding: 12px;
   background: #27ae60;
   color: white;
   border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+button:hover {
+  background: #219653;
+}
+
+button:active {
+  transform: scale(0.98);
 }
 
 .link {
   color: #27ae60;
   cursor: pointer;
-  margin-top: 10px;
+  margin-top: 14px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.link:hover {
+  color: #219653;
+  text-decoration: underline;
+}
+
+.new-user {
+  text-align: center;
+  cursor: pointer;
+  margin-top: 18px;
+  font-size: 14px;
+  color: #7f8c8d;
+  transition: color 0.2s;
+}
+
+.new-user:hover {
+  color: #27ae60;
 }
 
 .popup {
@@ -64,9 +124,9 @@ button {
 
 /* POPUP BOX */
 .popup-box {
-  width: 350px;
+  width: 380px;
   background: #fff;
-  padding: 20px;
+  padding: 24px;
   border-radius: 10px;
 
   /* PREMIUM SHADOW */
@@ -101,6 +161,11 @@ button {
   display: flex;
   justify-content: space-between;
   margin-top: 15px;
+  gap: 12px;
+}
+
+.popup-actions button {
+  margin-top: 0;
 }
 
 /* BUTTONS */
@@ -132,14 +197,6 @@ button {
   to { transform: scale(1); opacity: 1; }
 }
 
-.popup-overlay {
-  animation: fadeIn 0.25s ease;
-}
-
-.popup-box {
-  animation: scaleIn 0.25s ease forwards;
-}
-
 /* EXIT ANIMATION */
 .popup-overlay.closing {
   animation: fadeOut 0.2s ease forwards;
@@ -159,41 +216,55 @@ button {
   to { transform: scale(0.9); opacity: 0; }
 }
 
-/* ENTRY */
-.popup-overlay {
-  animation: fadeIn 0.25s ease;
+/* FORM VALIDATION STYLES */
+.form-field {
+  margin-bottom: 16px;
+  width: 100%;
 }
 
-.popup-box {
-  animation: scaleIn 0.25s ease;
+.form-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #4a5568;
+  margin-bottom: 4px;
+  text-align: left;
 }
 
-/* EXIT */
-.popup-overlay.closing {
-  animation: fadeOut 0.25s ease forwards;
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
 }
 
-.popup-box.closing {
-  animation: scaleOut 0.25s ease forwards;
+input.input-error, select.input-error, textarea.input-error {
+  border-color: #e53e3e !important;
+  background-color: #fffaf0;
+  padding-right: 36px; /* leave space for warning icon */
 }
 
-/* KEYFRAMES */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+input.input-error:focus, select.input-error:focus, textarea.input-error:focus {
+  box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.15) !important;
 }
 
-@keyframes fadeOut {
-  from { opacity: 1; }
-  to { opacity: 0; }
+.error-icon {
+  position: absolute;
+  right: 12px;
+  color: #e53e3e;
+  font-size: 18px;
+  pointer-events: none;
 }
 
-@keyframes scaleIn {
-  from { transform: scale(0.85); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
+.select-error-icon {
+  right: 32px; /* Position left of standard select arrow */
 }
 
-@keyframes scaleOut {
-  from { transform: scale(1); opacity: 1; }
-  to { transform: scale(0.85); opacity: 0; }
+.error-text {
+  display: block;
+  font-size: 11.5px;
+  color: #e53e3e;
+  margin-top: 5px;
+  text-align: left;
+  font-weight: 500;
 }

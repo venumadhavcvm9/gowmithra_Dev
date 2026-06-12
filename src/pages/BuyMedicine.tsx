@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import "./BuyMedicine.css";
 import { useNavigate } from "react-router-dom";
-import { FaUpload, FaPrescriptionBottleAlt, FaUserMd } from "react-icons/fa";
+import { FaUpload, FaPrescriptionBottleAlt, FaUserMd, FaCheckCircle } from "react-icons/fa";
+import API from "../services/api";
+import { toast } from "react-toastify";
 
 const restrictedCategories = [
   "Antibiotics",
@@ -17,6 +19,8 @@ const BuyMedicine = () => {
 
   const [file, setFile] = useState<File | null>(null);
   const [showLoginPopup, setShowLoginPopup] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const handleUploadClick = () => {
     if (!token) {
@@ -25,11 +29,34 @@ const BuyMedicine = () => {
     }
 
     if (!file) {
-      alert("Please upload prescription");
+      toast.error("Please upload prescription");
       return;
     }
 
-    console.log("Uploading:", file);
+    setLoading(true);
+    const reader = new FileReader();
+    reader.onloadend = async () => {
+      const base64String = reader.result as string;
+      try {
+        await API.post("/orders", {
+          items: [],
+          payment_mode: "COD",
+          prescription_image: base64String,
+        });
+        setShowSuccessModal(true);
+      } catch (err: any) {
+        console.error("Order error", err);
+        const msg = err.response?.data?.message || "Failed to place order";
+        if (msg.toLowerCase().includes("address are required")) {
+          toast.error("Please update your delivery address in your Profile before placing an order.");
+        } else {
+          toast.error(msg);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+    reader.readAsDataURL(file);
   };
 
   return (
@@ -63,8 +90,8 @@ const BuyMedicine = () => {
 
           {file && <p className="file-name">📄 {file.name}</p>}
 
-          <button onClick={handleUploadClick}>
-            Upload & Continue
+          <button onClick={handleUploadClick} disabled={loading}>
+            {loading ? "Processing..." : "Upload & Continue"}
           </button>
 
           {/* STEPS */}
@@ -118,6 +145,19 @@ const BuyMedicine = () => {
 
             <span onClick={() => setShowLoginPopup(false)}>Cancel</span>
 
+          </div>
+        </div>
+      )}
+
+      {/* SUCCESS MODAL */}
+      {showSuccessModal && (
+        <div className="popup-overlay">
+          <div className="popup-box success-box">
+            <div className="success-icon"><FaCheckCircle size={40} color="#16a34a" /></div>
+            <h3>Order Placed Successfully!</h3>
+            <p>Our pharmacist will review your prescription and connect with you soon.</p>
+            <button onClick={() => navigate("/profile")}>Go to My Orders</button>
+            <span onClick={() => { setShowSuccessModal(false); navigate("/"); }}>Back to Home</span>
           </div>
         </div>
       )}
