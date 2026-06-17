@@ -2,6 +2,7 @@ import "./Navbar.css";
 import { FaHome, FaCapsules, FaHeartbeat, FaFirstAid } from "react-icons/fa";
 import { GiMedicines } from "react-icons/gi";
 import React, { useState } from "react";
+import SearchBar from "./SearchBar";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 
@@ -32,10 +33,7 @@ const Navbar = () => {
             Gow<span>Mithra</span>
           </div>
 
-          <div className="search-box desktop-search">
-            <input placeholder="Search medicines..." />
-            <span className="search-icon">🔍</span>
-          </div>
+          <SearchBar className="desktop-search" />
 
           <div className="nav-links">
             <span
@@ -83,6 +81,7 @@ const Navbar = () => {
                 {open && (
                   <div className="dropdown">
                     <div onClick={() => { navigate("/profile"); setOpen(false); }}>My Profile</div>
+                    <div onClick={() => { navigate("/orders"); setOpen(false); }}>My Orders</div>
                     <div onClick={handleLogout}>Logout</div>
                   </div>
                 )}
@@ -91,10 +90,7 @@ const Navbar = () => {
           </div>
         </div>
 
-        <div className="search-box mobile-search">
-          <input placeholder="Search medicines..." />
-          <span className="search-icon">🔍</span>
-        </div>
+        <SearchBar className="mobile-search" />
         </div>
       </div>
 

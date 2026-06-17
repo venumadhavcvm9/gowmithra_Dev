@@ -13,7 +13,10 @@ import FeedAdditives from "./pages/FeedAdditives";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import Profile from "./pages/Profile";
+import Orders from "./pages/Orders";
 import { CartProvider } from "./context/CartContext";
+import WhatsAppButton from "./components/WhatsAppButton";
+
 const App: React.FC = () => {
   return (
     <CartProvider>
@@ -29,10 +32,12 @@ const App: React.FC = () => {
             <Route path="/cart" element={<Cart />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/orders" element={<Orders />} />
           </Routes>
         </Layout>
 
         <ToastContainer position="top-right" autoClose={3000} />
+        <WhatsAppButton />
       </Router>
     </CartProvider>
   );

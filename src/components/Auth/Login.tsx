@@ -174,8 +174,13 @@ const Login = () => {
 
     try {
       const res = await API.post("/users/login", loginData);
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("user", JSON.stringify(res.data.user)); // Fixed: Save user profile for frontend access
+      const token = res.data.token;
+      if (!token) {
+        toast.error("Login failed: no session token received");
+        return;
+      }
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
       toast.success("Login Success");
       window.location.href = "/";
     } catch {
@@ -244,11 +249,13 @@ const Login = () => {
     try {
       const res = await API.post("/users/register", registerData);
 
-      // Auto-login: Save token and user from registration response
-      if (res.data?.token) {
-        localStorage.setItem("token", res.data.token);
-        localStorage.setItem("user", JSON.stringify(res.data.user));
+      const token = res.data.token;
+      if (!token) {
+        toast.error("Registration failed: no session token received");
+        return;
       }
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
 
       toast.success("Registered successfully");
 

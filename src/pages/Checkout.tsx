@@ -29,7 +29,7 @@ const Checkout = () => {
     requires_prescription: boolean;
   } | null>(null);
 
-  const [prescriptionImage, setPrescriptionImage] = useState<string | null>(null);  // Auto-fill from localStorage user object
+  const [prescriptionImages, setPrescriptionImages] = useState<string[]>([]);
   useEffect(() => {
     // Check if token exists
     const token = localStorage.getItem("token");
@@ -108,14 +108,32 @@ const Checkout = () => {
   }, [state.items]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
+
+    if (prescriptionImages.length + files.length > 3) {
+      toast.error("You can upload a maximum of 3 prescription pages.");
+      return;
+    }
+
+    files.forEach(file => {
+      if (!file.type.startsWith("image/")) {
+        toast.error("Please select only image files.");
+        return;
+      }
       const reader = new FileReader();
       reader.onloadend = () => {
-        setPrescriptionImage(reader.result as string);
+        setPrescriptionImages(prev => [...prev, reader.result as string]);
       };
       reader.readAsDataURL(file);
-    }
+    });
+    
+    // Reset input so the same files can be selected again if removed
+    e.target.value = "";
+  };
+
+  const handleRemoveImage = (index: number) => {
+    setPrescriptionImages(prev => prev.filter((_, i) => i !== index));
   };
 
   const totalPayable = summaryData ? summaryData.total_amount : parseFloat((totalPrice * 1.05).toFixed(2));
@@ -138,7 +156,7 @@ const Checkout = () => {
       return;
     }
 
-    if (summaryData?.requires_prescription && !prescriptionImage) {
+    if (summaryData?.requires_prescription && prescriptionImages.length === 0) {
       toast.error("Please upload your prescription to place this order.");
       return;
     }
@@ -156,7 +174,7 @@ const Checkout = () => {
       };
 
       if (summaryData?.requires_prescription) {
-        orderPayload.prescription_image = prescriptionImage;
+        orderPayload.prescription_image = prescriptionImages;
       }
 
       const res = await API.post("/orders", orderPayload);
@@ -216,13 +234,26 @@ const Checkout = () => {
               <input
                 type="file"
                 accept="image/*"
+                multiple
                 onChange={handleFileChange}
-                style={{ marginBottom: "10px", width: "100%", padding: "10px", background: "#fffbeb", borderRadius: "8px" }}
+                disabled={prescriptionImages.length >= 3}
+                style={{ marginBottom: "10px", width: "100%", padding: "10px", background: "#fffbeb", borderRadius: "8px", opacity: prescriptionImages.length >= 3 ? 0.5 : 1 }}
               />
 
-              {prescriptionImage && (
-                <div style={{ marginTop: "10px", borderRadius: "8px", overflow: "hidden", border: "1px solid #ddd" }}>
-                  <img src={prescriptionImage} alt="Prescription preview" style={{ width: "100%", maxHeight: "200px", objectFit: "contain" }} />
+              {prescriptionImages.length > 0 && (
+                <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", marginTop: "10px" }}>
+                  {prescriptionImages.map((imgSrc, idx) => (
+                    <div key={idx} style={{ position: "relative", borderRadius: "8px", overflow: "hidden", border: "1px solid #ddd", width: "100px", height: "100px" }}>
+                      <img src={imgSrc} alt={`Prescription page ${idx + 1}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveImage(idx)}
+                        style={{ position: "absolute", top: "4px", right: "4px", background: "rgba(239, 68, 68, 0.9)", color: "white", border: "none", borderRadius: "50%", width: "20px", height: "20px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", fontSize: "12px", padding: 0 }}
+                      >
+                        &times;
+                      </button>
+                    </div>
+                  ))}
                 </div>
               )}
             </div>

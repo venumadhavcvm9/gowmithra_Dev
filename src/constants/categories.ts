@@ -5,11 +5,11 @@ export const CATEGORY_MAP = {
     { label: "Nutritional Supplements", value: "NUTRITIONAL" },
   ],
 
-  FIRST_AID: [
+  "First Aid": [
     { label: "Topical & First Aid Products", value: "FIRST_AID" },
   ],
 
-  FEED_ADDITIVES: [
+  "Feed Additives": [
     { label: "Feed Additives & Growth Promoters", value: "FEED_ADDITIVES" },
   ],
 };

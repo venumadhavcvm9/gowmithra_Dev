@@ -25,7 +25,7 @@ const CategoryPage = ({ type }: { type: string }) => {
 
       const filtered = (res.data || []).filter(
         (item: any) =>
-          item.category === type &&
+          item.category?.toLowerCase() === type.toLowerCase() &&
           (!selectedSub || item.sub_category === selectedSub) &&
           item.is_active &&
           item.show_to_users

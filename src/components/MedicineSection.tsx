@@ -6,8 +6,8 @@ import "./MedicineSection.css";
 
 const categories = [
   { key: "Supplements", label: "Supplements", route: "/supplements" },
-  { key: "FIRST_AID", label: "First Aid", route: "/first-aid" },
-  { key: "FEED_ADDITIVES", label: "Feed Additives", route: "/feed-additives" },
+  { key: "First Aid", label: "First Aid", route: "/first-aid" },
+  { key: "Feed Additives", label: "Feed Additives", route: "/feed-additives" },
 ];
 
 export interface Medicine {
@@ -77,7 +77,7 @@ const MedicineSection = () => {
 
       {categories.map((cat) => {
         const items = medicines
-          .filter((m) => m.category === cat.key)
+          .filter((m) => m.category?.toLowerCase() === cat.key.toLowerCase())
           .slice(0, 8); // ✅ max 8 products
 
         return (

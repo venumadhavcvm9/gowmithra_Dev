@@ -78,7 +78,7 @@ const Cart = () => {
             <button className="clear-btn" onClick={clearCart}>
               Clear Cart
             </button>
-            <button className="continue-btn" onClick={() => navigate("/buy-medicine")}>
+            <button className="continue-btn" onClick={() => navigate("/")}>
               Continue Shopping
             </button>
           </div>

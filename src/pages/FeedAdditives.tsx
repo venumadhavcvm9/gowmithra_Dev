@@ -1,7 +1,7 @@
 import CategoryPage from "../components/CategoryPage";
 
 const FeedAdditives = () => {
-  return <CategoryPage type="FEED_ADDITIVES" />;
+  return <CategoryPage type="Feed Additives" />;
 };
 
 export default FeedAdditives;
